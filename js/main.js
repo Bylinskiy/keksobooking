@@ -128,7 +128,21 @@ function generateArrayOfObjects() {
   return arr;
 }
 
+var objects = generateArrayOfObjects();
+
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-var mapPin = document.querySelector('.map--pin');
+var mapPins = document.querySelector('.map__pins');
+var mapPin = document.querySelector('.map__pin');
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
+for (var i = 0; i < objects.length; i++) {
+  var pinElement = pinTemplate.cloneNode(true);
+  pinElement.style = 'left:' + (objects[i].location.x - 40) + 'px;' + 'top:' + (objects[i].location.y - 44 / 2) + 'px';
+  pinElement.querySelector('img').src = objects[i].author.avatar;
+  pinElement.querySelector('img').alt = objects[i].offer.title;
+  mapPins.appendChild(pinElement);
+}
+
+
