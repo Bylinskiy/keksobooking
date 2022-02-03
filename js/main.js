@@ -1,5 +1,6 @@
 'use strict';
 var NUMBER_OF_OBJECTS = 8;
+var ENTER_KEY = 'Enter';
 
 var TITLE = [
   'Топовая хата',
@@ -137,22 +138,31 @@ var filters = document.querySelector('.map__filters');
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 // var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
-map.classList.remove('map--faded');
+var filterSelect = filters.querySelectorAll('select');
+var filterCheckbox = filters.querySelectorAll('.map__checkbox');
+var mainPin = document.querySelector('.map__pin--main');
 
 var disableFilters = function () {
-  var filterSelect = filters.querySelectorAll('select');
   for (var i = 0; i < filterSelect.length; i++) {
     filterSelect[i].disabled = true;
   }
 
-  var filterCheckbox = filters.querySelectorAll('.map__checkbox');
   for (var j = 0; j < filterCheckbox.length; j++) {
     filterCheckbox[i].disabled = true;
   }
 };
-disableFilters();
 
+var enableFilters = function () {
+  for (var i = 0; i < filterSelect.length; i++) {
+    filterSelect[i].disabled = false;
+  }
+
+  for (var j = 0; j < filterCheckbox.length; j++) {
+    filterCheckbox[i].disabled = false;
+  }
+};
+
+disableFilters();
 
 var renderPin = function (element) {
   var pinElement = pinTemplate.cloneNode(true);
@@ -217,8 +227,19 @@ for (var i = 0; i < objects.length; i++) {
 mapPins.appendChild(pinFragment);
 // map.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
 
-// var activate = function () {
+var activateModeOn = function () {
+  enableFilters();
+  map.classList.remove('map--faded');
+};
 
-// };
+mainPin.addEventListener('mousedown', function (evt) {
+  if (evt.which === 1) {
+    activateModeOn();
+  }
+});
 
-
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    activateModeOn();
+  }
+});
