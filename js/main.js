@@ -260,3 +260,44 @@ var fillAddress = function () {
 };
 
 fillAddress();
+
+var roomNumberSelect = document.querySelector('#room_number');
+var capacitySelect = document.querySelector('#capacity');
+var uploadButton = document.querySelector('.ad-form__submit');
+
+uploadButton.addEventListener('click', function () {
+  var roomNum = Number(roomNumberSelect.value);
+  var guestsNum = Number(capacitySelect.value);
+  switch (roomNum) {
+    case 1:
+      if (guestsNum !== roomNum) {
+        roomNumberSelect.setCustomValidity('К сожалению, размещение возможно только для одного гостя.');
+      } else {
+        roomNumberSelect.setCustomValidity('');
+      }
+      break;
+    case 2:
+    case 3:
+      if (guestsNum > roomNum || guestsNum === 0) {
+        roomNumberSelect.setCustomValidity('К сожалению, в ' + roomNum + ' комнатах можно разместить от 1 до ' + roomNum + ' гостей');
+      } else {
+        roomNumberSelect.setCustomValidity('');
+      }
+      break;
+    case 100:
+      if (guestsNum !== 0) {
+        roomNumberSelect.setCustomValidity('К сожалению, эти комнаты не предназначены для гостей.');
+      } else {
+        roomNumberSelect.setCustomValidity('');
+      }
+      break;
+    default:
+      roomNumberSelect.setCustomValidity('');
+  }
+});
+
+
+// 1 комната — «для 1 гостя»;
+// 2 комнаты — «для 2 гостей» или «для 1 гостя»;
+// 3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;
+// 100 комнат — «не для гостей».
