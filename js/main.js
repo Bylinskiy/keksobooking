@@ -269,22 +269,29 @@ var getCoordsMainPin = function () {
   return mainPinCoords;
 };
 
-var noticeAddress = document.querySelector('.notice').querySelector('#address');
+var address = document.querySelector('#address');
 
 var fillAddress = function () {
   var pinCoords = getCoordsMainPin();
-  noticeAddress.value = pinCoords.x + ', ' + pinCoords.y;
+  address.value = pinCoords.x + ', ' + pinCoords.y;
 };
 
 fillAddress();
 
 var roomNumberSelect = document.querySelector('#room_number');
 var capacitySelect = document.querySelector('#capacity');
+
+var typeSelect = document.querySelector('#type');
+var checkinSelect = document.querySelector('#timein');
+var checkoutSelect = document.querySelector('#timeout');
+var title = document.querySelector('#title');
+var price = document.querySelector('#price');
 var uploadButton = document.querySelector('.ad-form__submit');
 
 uploadButton.addEventListener('click', function () {
   var roomNum = Number(roomNumberSelect.value);
   var guestsNum = Number(capacitySelect.value);
+  var type = typeSelect.value;
   switch (roomNum) {
     case 1:
       if (guestsNum !== roomNum) {
@@ -310,6 +317,74 @@ uploadButton.addEventListener('click', function () {
       break;
     default:
       roomNumberSelect.setCustomValidity('');
+  }
+
+  if (title.value.length < 30) {
+    title.setCustomValidity('Минимальная длина заголовка — 30 символов');
+  } else if (title.value.length > 100) {
+    title.setCustomValidity('Максимальная длина заголовка — 100 символов');
+  } else {
+    title.setCustomValidity('');
+  }
+
+  if (isNaN(Number(price.value))) {
+    price.setCustomValidity('К сожалению, это числовое поле');
+  } else if (Number(price.value) > 1000000) {
+    price.setCustomValidity('К сожалению, максимальная стоимость 1 000 000');
+  } else {
+    price.setCustomValidity('');
+  }
+
+  if (type === 'bungalo' && Number(price.value) < 0) {
+    typeSelect.setCustomValidity('К сожалению, минимальная стоимость за этот тип жилья 0');
+  } else if (type === 'flat' && Number(price.value) < 1000) {
+    typeSelect.setCustomValidity('К сожалению, минимальная стоимость за этот тип жилья 1 000');
+  } else if (type === 'house' && Number(price.value) < 5000) {
+    typeSelect.setCustomValidity('К сожалению, минимальная стоимость за этот тип жилья 5 000');
+  } else if (type === 'palace' && Number(price.value) < 10000) {
+    typeSelect.setCustomValidity('К сожалению, минимальная стоимость за этот тип жилья 10 000');
+  } else {
+    typeSelect.setCustomValidity('');
+  }
+});
+
+typeSelect.addEventListener('change', function () {
+  if (typeSelect.value === 'bungalo') {
+    price.placeholder = '0';
+  } else if (typeSelect.value === 'flat') {
+    price.placeholder = '1000';
+  } else if (typeSelect.value === 'house') {
+    price.placeholder = '5000';
+  } else if (typeSelect.value === 'palace') {
+    price.placeholder = '10000';
+  }
+});
+
+checkinSelect.addEventListener('change', function () {
+  switch (checkinSelect.value) {
+    case '12:00':
+      checkoutSelect.options[0].selected = true;
+      break;
+    case '13:00':
+      checkoutSelect.options[1].selected = true;
+      break;
+    case '14:00':
+      checkoutSelect.options[2].selected = true;
+      break;
+  }
+});
+
+checkoutSelect.addEventListener('change', function () {
+  switch (checkoutSelect.value) {
+    case '12:00':
+      checkinSelect.options[0].selected = true;
+      break;
+    case '13:00':
+      checkinSelect.options[1].selected = true;
+      break;
+    case '14:00':
+      checkinSelect.options[2].selected = true;
+      break;
   }
 });
 
