@@ -3,6 +3,8 @@
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+  var pinBox = mainPin.getBoundingClientRect();
+  var mapBox = map.getBoundingClientRect();
 
   var renderPin = function (element, index) {
     var pinElement = pinTemplate.cloneNode(true);
@@ -19,9 +21,6 @@
   }
 
   var getCoordsMainPin = function () {
-    var pinBox = mainPin.getBoundingClientRect();
-    var mapBox = map.getBoundingClientRect();
-
     var mainPinCoords = {
       x: pinBox.x - mapBox.x,
       y: pinBox.y - mapBox.y
@@ -39,5 +38,7 @@
     findIndexPinHandler: findIndexPinHandler,
     mainPin: mainPin,
     pinFragment: pinFragment,
+    mapBox: mapBox,
+    pinBox: pinBox
   };
 })();
