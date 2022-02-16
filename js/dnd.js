@@ -1,5 +1,8 @@
 'use strict';
 (function () {
+  var pinBox = document.querySelector('.map__pin--main').getBoundingClientRect();
+  var mapBox = document.querySelector('.map').getBoundingClientRect();
+
   window.pin.mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -25,7 +28,7 @@
         y: window.pin.mainPin.offsetTop - shift.y
       };
 
-      if (endCoords.x < 0 || endCoords.x > (window.pin.mapBox.width - window.pin.pinBox.width) || endCoords.y < 0 || endCoords.y > (window.pin.mapBox.height - window.pin.pinBox.height) - 60) {
+      if (endCoords.x < 0 || endCoords.x > (mapBox.width - pinBox.width) || endCoords.y < 0 || endCoords.y > (mapBox.height - pinBox.height) - 60) {
         document.removeEventListener('mouseup', onMouseUp);
         document.removeEventListener('mousemove', onMouseMove);
       } else {
