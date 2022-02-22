@@ -6,7 +6,7 @@
 
   var renderPin = function (element, index) {
     var pinElement = pinTemplate.cloneNode(true);
-    pinElement.style = 'left:' + (element.location.x - 40) + 'px;' + 'top:' + (element.location.y - 44 / 2) + 'px';
+    pinElement.style = 'left:' + (String(element.location.lat).substr(-3)) + 'px;' + 'top:' + (((String(element.location.lng).substr(-3)) / 3) + 240) + 'px';
     pinElement.querySelector('img').src = element.author.avatar;
     pinElement.querySelector('img').alt = element.offer.title;
     pinElement.setAttribute('data-pin-index', index);
@@ -14,9 +14,12 @@
   };
 
   var pinFragment = document.createDocumentFragment();
-  for (var i = 0; i < window.data.objects.length; i++) {
-    pinFragment.appendChild(renderPin(window.data.objects[i], i));
-  }
+  window.backend.get(function (objects) {
+    for (var i = 0; i < objects.length; i++) {
+      pinFragment.appendChild(renderPin(objects[i], i));
+    }
+  });
+
 
   var getCoordsMainPin = function () {
     var pinBox = mainPin.getBoundingClientRect();

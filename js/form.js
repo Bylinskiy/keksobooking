@@ -135,6 +135,53 @@
     }
   });
 
+  var onErrBtnEscPress = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEYCODE) {
+      closeErrMsg();
+      closeScsMsg();
+    }
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.post(new FormData(adForm), window.msg.successHandler, window.msg.errorHandler);
+    evt.preventDefault();
+    adForm.reset();
+    document.addEventListener('keydown', onErrBtnEscPress);
+  });
+
+  var closeErrMsg = function () {
+    document.removeEventListener('keydown', onErrBtnEscPress);
+    document.querySelector('.error').remove();
+  };
+
+  var closeScsMsg = function () {
+    document.removeEventListener('keydown', onErrBtnEscPress);
+    document.querySelector('.success').remove();
+  };
+
+  adForm.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.util.ENTER_KEYCODE) {
+      closeErrMsg();
+    }
+  });
+
+  window.msg.errorCloseButton.addEventListener('click', function () {
+    closeErrMsg();
+  });
+
+  adForm.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.util.ENTER_KEYCODE) {
+      closeScsMsg();
+    }
+  });
+
+  adForm.addEventListener('mousedown', function (evt) {
+    if (evt.which === 1) {
+      closeScsMsg();
+    }
+  });
+
+
   window.form = {
     enableFilters: enableFilters,
     fillAddress: fillAddress

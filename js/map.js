@@ -71,12 +71,18 @@
     mapPins.appendChild(window.pin.pinFragment);
   };
 
-  var openAnotherCard = function (evt) {
-    if (!isNaN(window.pin.findIndexPinHandler(evt))) {
-      window.card.cardFragment.appendChild(window.card.renderCard(window.data.objects[window.pin.findIndexPinHandler(evt)]));
-      map.insertBefore(window.card.cardFragment, document.querySelector('.map__filters-container'));
-      window.card.popup.classList.remove('hidden');
-    }
-  };
+  var openAnotherCard;
+
+  window.backend.get(function (objects) {
+    openAnotherCard = function (evt) {
+      if (!isNaN(window.pin.findIndexPinHandler(evt))) {
+        window.card.cardFragment.appendChild(window.card.renderCard(objects[window.pin.findIndexPinHandler(evt)]));
+        map.insertBefore(window.card.cardFragment, document.querySelector('.map__filters-container'));
+        window.card.popup.classList.remove('hidden');
+      }
+    };
+  });
+
+
   map.insertBefore(window.card.cardFragment, document.querySelector('.map__filters-container'));
 })();
