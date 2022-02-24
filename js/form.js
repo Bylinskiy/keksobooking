@@ -19,6 +19,17 @@
     }
   };
 
+  var disableFilters = function () {
+    filterSelect.forEach(function (element) {
+      element.disabled = true;
+    });
+    filterCheckbox.disabled = true;
+    adForm.classList.add('ad-form--disabled');
+    adFormFieldSets.forEach(function (element) {
+      element.disabled = true;
+    });
+  };
+
   var fillAddress = function () {
     var pinCoords = window.pin.getCoordsMainPin();
     address.value = pinCoords.x + ', ' + pinCoords.y;
@@ -146,6 +157,7 @@
     window.backend.post(new FormData(adForm), window.msg.successHandler, window.msg.errorHandler);
     evt.preventDefault();
     adForm.reset();
+    window.bookmap.activateModeOff();
     document.addEventListener('keydown', onErrBtnEscPress);
   });
 
@@ -169,21 +181,9 @@
     closeErrMsg();
   });
 
-  adForm.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.util.ENTER_KEYCODE) {
-      closeScsMsg();
-    }
-  });
-
-  adForm.addEventListener('mousedown', function (evt) {
-    if (evt.which === 1) {
-      closeScsMsg();
-    }
-  });
-
-
   window.form = {
     enableFilters: enableFilters,
+    disableFilters: disableFilters,
     fillAddress: fillAddress
   };
 })();

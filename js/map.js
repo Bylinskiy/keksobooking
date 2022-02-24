@@ -9,6 +9,12 @@
     addPinsOnMap();
   };
 
+  var activateModeOff = function () {
+    window.form.disableFilters();
+    map.classList.add('map--faded');
+    clearPinsOnMap();
+  };
+
   window.pin.mainPin.addEventListener('mousedown', function (evt) {
     if (evt.which === 1) {
       activateModeOn();
@@ -68,8 +74,17 @@
   };
 
   var addPinsOnMap = function () {
+    window.pin.getPins();
     mapPins.appendChild(window.pin.pinFragment);
   };
+
+  var clearPinsOnMap = function () {
+    var allPins = mapPins.querySelectorAll('button[data-pin-index]');
+    allPins.forEach(function (element) {
+      element.remove();
+    });
+  };
+
 
   var openAnotherCard;
 
@@ -85,4 +100,8 @@
 
 
   map.insertBefore(window.card.cardFragment, document.querySelector('.map__filters-container'));
+
+  window.bookmap = {
+    activateModeOff: activateModeOff
+  };
 })();
