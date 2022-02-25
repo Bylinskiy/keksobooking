@@ -16,9 +16,10 @@
 
 
   var getPins = function () {
-    window.backend.get(function (objects) {
-      for (var i = 0; i < objects.length; i++) {
-        pinFragment.appendChild(renderPin(objects[i], i));
+    window.backend.get(function (data) {
+      var takeNumberPins = data.length > 5 ? 5 : data.length;
+      for (var i = 0; i < takeNumberPins; i++) {
+        pinFragment.appendChild(renderPin(data[i], i));
       }
     });
   };
